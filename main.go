@@ -11,7 +11,7 @@ func init() {
 }
 
 func main() {
-	fmt.Println("Starting testbed application")
+	fmt.Println("Starting testbed application %v")
 	err := Connect()
 	if err != nil {
 		fmt.Println(err.Error())

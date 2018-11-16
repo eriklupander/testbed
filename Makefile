@@ -6,6 +6,9 @@ default: format build test
 format:
 	go fmt
 
+vet:
+	go vet ./...
+
 build:
 	mkdir -p dist
 	export GO111MODULE=on

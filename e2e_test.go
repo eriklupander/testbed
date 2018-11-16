@@ -16,6 +16,7 @@ func TestRunningApi(t *testing.T) {
 	defer db.Close()
 	if err != nil {
 		t.Errorf(err.Error())
+		panic(err.Error())
 	}
 
 	Convey("Given", t, func() {
