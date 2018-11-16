@@ -54,7 +54,8 @@ func TestApi(t *testing.T) {
 		guid := createTestAccount(t)
 
 		Convey("When", func() {
-			resp, _ := http.Get("http://localhost:8080/accounts/" + guid)
+			resp, err := http.Get("http://localhost:8080/accounts/" + guid)
+			So(err, ShouldBeNil)
 			Convey("Then", func() {
 				So(resp.StatusCode, ShouldEqual, 200)
 				body, _ := ioutil.ReadAll(resp.Body)
