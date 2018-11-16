@@ -13,7 +13,7 @@ jobs: # basic units of work in a run
     working_directory: /go/src/github.com/eriklupander/testbed
 
     environment: # environment variables for the build itself
-      GO111MODULE: on
+      GO111MODULE: "ON"
       TEST_RESULTS: /tmp/test-results # path to where test results will be saved
 
     steps: # steps that comprise the `build` job
