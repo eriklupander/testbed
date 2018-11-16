@@ -13,3 +13,5 @@
 testbed
 dist/
 .idea
+*.out
+*.html

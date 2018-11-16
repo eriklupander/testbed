@@ -30,7 +30,7 @@ jobs: # basic units of work in a run
     - run:
         name: Run go vet
         command: |
-          make vet 2>&1 | tee ${TEST_RESULTS}/go-vet.out
+          make vet &> | tee ${TEST_RESULTS}/go-vet.out
 
 
     #  CircleCi's Go Docker image includes netcat
