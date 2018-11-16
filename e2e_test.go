@@ -22,10 +22,10 @@ func TestRunningApi(t *testing.T) {
 	Convey("Given", t, func() {
 		guid := createTestAccount(t)
 
-		Convey("When", func() {
+		Convey("When resource exists", func() {
 			resp, err := http.Get("http://localhost:8080/accounts/" + guid)
 			So(err, ShouldBeNil)
-			Convey("Then", func() {
+			Convey("Then expect HTTP 200", func() {
 				So(resp.StatusCode, ShouldEqual, 200)
 				body, _ := ioutil.ReadAll(resp.Body)
 				accountImage := &AccountImage{}
@@ -34,10 +34,10 @@ func TestRunningApi(t *testing.T) {
 			})
 		})
 
-		Convey("When", func() {
+		Convey("When resource does not exist", func() {
 			resp, err := http.Get("http://localhost:8080/accounts/nonexisting")
 			So(err, ShouldBeNil)
-			Convey("Then", func() {
+			Convey("Then expect HTTP 404", func() {
 				So(resp.StatusCode, ShouldEqual, 404)
 			})
 		})
