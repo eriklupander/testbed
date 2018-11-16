@@ -24,6 +24,20 @@ func Connect() error {
 	return nil
 }
 
+func FindAccountImage(id string) (AccountImage, error) {
+	if db == nil {
+		return AccountImage{}, fmt.Errorf("DB not initialized")
+	}
+	tx := db.Begin()
+	accountImage := &AccountImage{}
+	tx.Find(&accountImage, "WHERE ID=?", id)
+	if tx.Error != nil {
+		return *accountImage, tx.Error
+	}
+	tx.Commit()
+	return *accountImage, nil
+}
+
 func health() bool {
 	err := db.DB().Ping()
 	return err == nil

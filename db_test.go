@@ -3,9 +3,9 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	. "github.com/smartystreets/goconvey/convey"
-	"github.com/twinj/uuid"
+	"net/http"
 	"testing"
 )
 
@@ -20,13 +20,7 @@ func TestDb(t *testing.T) {
 
 	Convey("Given", t, func() {
 		// Create something in the DB
-		guid := uuid.NewV4().String()
-		tx := db.Begin()
-		tx = tx.Create(&AccountImage{ID: guid, URL: SAMPLE_URL, ServedBy: "localhost"})
-		if tx.Error != nil {
-			t.Error(fmt.Printf("Error creating AccountImage: %v", tx.Error.Error()))
-		}
-		tx = tx.Commit()
+		guid := createTestAccount(t)
 
 		Convey("When", func() {
 			// Load it
@@ -41,8 +35,42 @@ func TestDb(t *testing.T) {
 		})
 	})
 
+	deleteTestAccount()
+}
+
+func TestApi(t *testing.T) {
+	Convey("Given", t, func() {
+		guid := createTestAccount(t)
+
+		Convey("When", func() {
+			resp, err := http.Get("http://localhost:8080/accounts/" + guid)
+			Convey("Then", func() {
+				So(resp.StatusCode, ShouldEqual, 200)
+				body, err := ioutil.ReadAll(resp.Body)
+				accountImage := &AccountImage{}
+				json.Unmarshal(body, &accountImage)
+				So(accountImage.URL, ShouldEqual, SAMPLE_URL)
+			})
+		})
+	})
+
+	deleteTestAccount()
+}
+
+func deleteTestAccount() {
 	tx := db.Begin()
 	tx.Delete(&AccountImage{})
 	tx.Commit()
 	fmt.Println("Cleaned up!")
+}
+
+func createTestAccount(t *testing.T) string {
+	guid := uuid.NewV4().String()
+	tx := db.Begin()
+	tx = tx.Create(&AccountImage{ID: guid, URL: SAMPLE_URL, ServedBy: "localhost"})
+	if tx.Error != nil {
+		t.Error(fmt.Printf("Error creating AccountImage: %v", tx.Error.Error()))
+	}
+	tx = tx.Commit()
+	return guid
 }
