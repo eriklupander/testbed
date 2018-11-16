@@ -12,7 +12,7 @@ import (
 var SAMPLE_URL = "http://callistaenterprise.se"
 
 func TestDb(t *testing.T) {
-	db, err := Connect()
+	err := Connect()
 	defer db.Close()
 	if err != nil {
 		t.Errorf(err.Error())
