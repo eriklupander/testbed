@@ -14,10 +14,9 @@ func main() {
 	fmt.Println("Starting testbed application")
 	err := Connect()
 	if err != nil {
-		//panic(err.Error())
 		fmt.Println(err.Error())
 	}
-	SetupGin()
+	go SetupGin()
 
 	wg := sync.WaitGroup{}
 	wg.Add(1)

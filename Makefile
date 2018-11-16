@@ -14,5 +14,8 @@ test:
 integrationtest:
 	@go test -tags=integration
 
+e2etest:
+	@go test -tags=e2e
+
 run: build
 	./dist/testbed

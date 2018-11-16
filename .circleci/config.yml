@@ -75,6 +75,15 @@ jobs: # basic units of work in a run
           sleep 5
           curl --retry 10 --retry-delay 1 -X GET http://localhost:8080/health
 
+    - run:
+        name: Run E2E tests
+        environment: # environment variables for the database url and path to migration files
+          DB_URL: "postgres://testbed@localhost:5432/testbed_test?sslmode=disable"
+        # Store the results of our tests in the $TEST_RESULTS directory
+        command: |
+          trap "go-junit-report <${TEST_RESULTS}/go-e2etest.out > ${TEST_RESULTS}/go-e2etest-report.xml" EXIT
+          make e2etest | tee ${TEST_RESULTS}/go-e2etest.out
+
     - store_artifacts: # Upload test summary for display in Artifacts
         path: /tmp/test-results
         destination: raw-test-output
