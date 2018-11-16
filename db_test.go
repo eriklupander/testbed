@@ -14,21 +14,35 @@ func TestDb(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	Convey("Given", t, func() {
+	Convey("Given there is a known row in the DB", t, func() {
 		// Create something in the DB
 		guid := createTestAccount(t)
 
-		Convey("When", func() {
+		Convey("When read from the db", func() {
 			// Load it
 			acc := &AccountImage{}
 			tx := db.Begin()
 			tx = tx.First(&acc, "ID = ?", guid)
 			tx = tx.Commit()
-			Convey("Then", func() {
+			Convey("Then we should get the correct value", func() {
 				// Assert
+				So(tx.Error, ShouldBeNil)
 				So(acc.URL, ShouldEqual, SAMPLE_URL)
 			})
 		})
+
+		Convey("When trying to read a non-existing object", func() {
+			// Load it
+			acc := &AccountImage{}
+			tx := db.Begin()
+			tx = tx.First(&acc, "ID = ?", "nonexisting")
+			tx = tx.Commit()
+			Convey("Then we should get an error", func() {
+				// Assert
+				So(tx.Error, ShouldNotBeNil)
+			})
+		})
+
 	})
 
 	deleteTestAccount()
