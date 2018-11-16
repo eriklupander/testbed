@@ -42,6 +42,12 @@ func TestDb(t *testing.T) {
 }
 
 func TestApi(t *testing.T) {
+	err := Connect()
+	defer db.Close()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
 	Convey("Given", t, func() {
 		guid := createTestAccount(t)
 
