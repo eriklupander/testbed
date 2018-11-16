@@ -58,7 +58,7 @@ jobs: # basic units of work in a run
     - save_cache: # Store cache in the /go/pkg directory
         key: go-mod-v1-{{ checksum "go.sum" }}
         paths:
-        - "/go/pkg/mod"
+          - "/go/pkg/mod"
 
     - run:
         name: Start service
