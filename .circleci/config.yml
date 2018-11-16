@@ -43,6 +43,8 @@ jobs: # basic units of work in a run
     #      done
     #      echo Failed waiting for Postgres && exit 1
 
+    - run: make build # pull and build dependencies for the project
+
     - run:
         name: Run unit tests
         environment: # environment variables for the database url and path to migration files
@@ -52,8 +54,6 @@ jobs: # basic units of work in a run
         command: |
           trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
           make test | tee ${TEST_RESULTS}/go-test.out
-
-    - run: make # pull and build dependencies for the project
 
     - save_cache: # Store cache in the /go/pkg directory
         key: v1-pkg-cache
