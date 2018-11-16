@@ -11,7 +11,7 @@ func TestDb(t *testing.T) {
 	err := Connect()
 	defer db.Close()
 	if err != nil {
-		t.Errorf(err.Error())
+		panic(err.Error())
 	}
 
 	Convey("Given there is a known row in the DB", t, func() {
