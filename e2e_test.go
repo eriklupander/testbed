@@ -3,11 +3,9 @@
 package main
 
 import (
-	"io/ioutil"
-	"fmt"
 	"encoding/json"
 	. "github.com/smartystreets/goconvey/convey"
-	"github.com/twinj/uuid"
+	"io/ioutil"
 	"net/http"
 	"testing"
 )
@@ -37,22 +35,4 @@ func TestRunningApi(t *testing.T) {
 	})
 
 	deleteTestAccount()
-}
-
-func deleteTestAccount() {
-	tx := db.Begin()
-	tx.Delete(&AccountImage{})
-	tx.Commit()
-	fmt.Println("Cleaned up!")
-}
-
-func createTestAccount(t *testing.T) string {
-	guid := uuid.NewV4().String()
-	tx := db.Begin()
-	tx = tx.Create(&AccountImage{ID: guid, URL: SAMPLE_URL, ServedBy: "localhost"})
-	if tx.Error != nil {
-		t.Error(fmt.Printf("Error creating AccountImage: %v", tx.Error.Error()))
-	}
-	tx = tx.Commit()
-	return guid
 }

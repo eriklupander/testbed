@@ -7,8 +7,6 @@ import (
 	"testing"
 )
 
-var SAMPLE_URL = "http://callistaenterprise.se"
-
 func TestDb(t *testing.T) {
 	err := Connect()
 	defer db.Close()
