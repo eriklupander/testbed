@@ -28,4 +28,5 @@ func SetupGin() {
 			c.JSON(200, accountImage)
 		}
 	})
+	router.Run(":8080")
 }

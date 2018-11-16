@@ -13,3 +13,6 @@ test:
 
 integrationtest:
 	@go test -tags=integration
+
+run: build
+	./dist/testbed
