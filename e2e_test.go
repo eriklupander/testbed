@@ -33,6 +33,14 @@ func TestRunningApi(t *testing.T) {
 				So(accountImage.URL, ShouldEqual, SAMPLE_URL)
 			})
 		})
+
+		Convey("When", func() {
+			resp, err := http.Get("http://localhost:8080/accounts/nonexisting")
+			So(err, ShouldBeNil)
+			Convey("Then", func() {
+				So(resp.StatusCode, ShouldEqual, 404)
+			})
+		})
 	})
 
 	deleteTestAccount()
