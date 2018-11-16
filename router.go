@@ -10,7 +10,11 @@ func SetupGin() {
 		})
 	})
 	router.GET("/health", func(c *gin.Context) {
-		c.String(200, "OK")
+		if health() {
+			c.String(200, "OK")
+		} else {
+			c.String(500, "NOT OK")
+		}
 	})
 	router.Run() // listen and serve on 0.0.0.0:8080
 }

@@ -7,15 +7,24 @@ import (
 	"github.com/spf13/viper"
 )
 
-func Connect() *gorm.DB {
+var db *gorm.DB
+
+func Connect() error {
 	addr := viper.GetString("DB_URL")
 	fmt.Printf("Connecting to %v\n", addr)
-	db, err := gorm.Open("postgres", addr)
+
+	var err error
+	db, err = gorm.Open("postgres", addr)
 	if err != nil {
-		panic("failed to connect database: " + err.Error())
+		return fmt.Errorf("failed to connect database: %v", err.Error())
 	}
 
 	// Migrate the schema
 	db.AutoMigrate(&AccountImage{})
-	return db
+	return nil
+}
+
+func health() bool {
+	err := db.DB().Ping()
+	return err == nil
 }

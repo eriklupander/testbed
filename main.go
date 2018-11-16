@@ -11,7 +11,10 @@ func init() {
 
 func main() {
 	fmt.Println("Starting testbed application")
-	Connect()
+	err := Connect()
+	if err != nil {
+		panic(err.Error())
+	}
 	SetupGin()
 }
 

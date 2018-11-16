@@ -12,8 +12,11 @@ import (
 var SAMPLE_URL = "http://callistaenterprise.se"
 
 func TestDb(t *testing.T) {
-	db := Connect()
+	db, err := Connect()
 	defer db.Close()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
 
 	Convey("Given", t, func() {
 		// Create something in the DB
