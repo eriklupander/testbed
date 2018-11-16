@@ -1,5 +1,6 @@
 GOFILES = $(shell find . -name '*.go' -not -path './vendor/*')
 GOPACKAGES = $(shell go list ./...  | grep -v /vendor/)
+TEST_RESULTS=/tmp/test-results
 
 default: format build test vet
 
@@ -15,16 +16,19 @@ build:
 	go build -o dist/testbed
 
 test:
-	@go test -coverprofile=unittest.out -v $(GOPACKAGES)
-	@go tool cover -html=unittest.out -o unittest-coverage.html
+	mkdir -p ${TEST_RESULTS}
+	@go test -coverprofile=${TEST_RESULTS}/unittest.out -v $(GOPACKAGES)
+	@go tool cover -html=${TEST_RESULTS}/unittest.out -o ${TEST_RESULTS}/unittest-coverage.html
 
 integrationtest:
-	@go test -coverprofile=integrationtest.out -tags="testtools integration"
-	@go tool cover -html=integrationtest.out -o integrationtest-coverage.html
+	mkdir -p ${TEST_RESULTS}
+	@go test -coverprofile=${TEST_RESULTS}/integrationtest.out -tags="testtools integration"
+	@go tool cover -html=${TEST_RESULTS}/integrationtest.out -o ${TEST_RESULTS}/integrationtest-coverage.html
 
 e2etest:
-	@go test -coverprofile=e2etest.out -tags="testtools e2e"
-	@go tool cover -html=e2etest.out -o e2etest-coverage.html
+	mkdir -p ${TEST_RESULTS}
+	@go test -coverprofile=${TEST_RESULTS}/e2etest.out -tags="testtools e2e"
+	@go tool cover -html=${TEST_RESULTS}/e2etest.out -o ${TEST_RESULTS}/e2etest-coverage.html
 
 run: build
 	./dist/testbed

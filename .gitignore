@@ -13,5 +13,4 @@
 testbed
 dist/
 .idea
-*.out
-*.html
+test-reports/
