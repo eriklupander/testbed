@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"encoding/json"
 	. "github.com/smartystreets/goconvey/convey"
-	"github.com/myesui/uuid"
+	"github.com/twinj/uuid"
 	"net/http"
 	"testing"
 )
@@ -46,10 +46,10 @@ func TestApi(t *testing.T) {
 		guid := createTestAccount(t)
 
 		Convey("When", func() {
-			resp, err := http.Get("http://localhost:8080/accounts/" + guid)
+			resp, _ := http.Get("http://localhost:8080/accounts/" + guid)
 			Convey("Then", func() {
 				So(resp.StatusCode, ShouldEqual, 200)
-				body, err := ioutil.ReadAll(resp.Body)
+				body, _ := ioutil.ReadAll(resp.Body)
 				accountImage := &AccountImage{}
 				json.Unmarshal(body, &accountImage)
 				So(accountImage.URL, ShouldEqual, SAMPLE_URL)
