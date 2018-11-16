@@ -4,11 +4,6 @@ import "testing"
 import "github.com/google/go-cmp/cmp"
 import . "github.com/smartystreets/goconvey/convey"
 
-func TestDump(t *testing.T) {
-	t1 := T1{"VAL1", 12}
-	Dump(t1)
-}
-
 func TestEqual(t *testing.T) {
 	t1 := T1{"VAL1", 12}
 	t2 := T1{"VAL2", 12}

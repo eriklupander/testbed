@@ -7,8 +7,8 @@ jobs: # basic units of work in a run
     # CircleCI PostgreSQL images available at: https://hub.docker.com/r/circleci/postgres/
     - image: circleci/postgres:9.6-alpine
       environment: # environment variables for primary container
-        POSTGRES_USER: circleci-demo-go
-        POSTGRES_DB: circle_test
+        POSTGRES_USER: testbed
+        POSTGRES_DB: testbed_test
     # directory where steps are run. Path must conform to the Go Workspace requirements
     # working_directory: /go/src/github.com/eriklupander/testbed
 
@@ -26,8 +26,6 @@ jobs: # basic units of work in a run
 
     # Normally, this step would be in a custom primary image;
     # we've added it here for the sake of explanation.
-    #- run: go get github.com/lib/pq
-    #- run: go get github.com/mattes/migrate
     - run: go get github.com/jstemmer/go-junit-report
 
     #  CircleCi's Go Docker image includes netcat
@@ -45,13 +43,19 @@ jobs: # basic units of work in a run
 
     - run:
         name: Run unit tests
-        environment: # environment variables for the database url and path to migration files
-          CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
-          CONTACTS_DB_MIGRATIONS: /go/src/github.com/CircleCI-Public/circleci-demo-go/db/migrations
         # Store the results of our tests in the $TEST_RESULTS directory
         command: |
           trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
           make test | tee ${TEST_RESULTS}/go-test.out
+
+    - run:
+        name: Run integration tests
+        environment: # environment variables for the database url and path to migration files
+          DB_URL: "postgres://testbed@localhost:5432/testbed_test?sslmode=disable"
+        # Store the results of our tests in the $TEST_RESULTS directory
+        command: |
+          trap "go-junit-report <${TEST_RESULTS}/go-integrationtest.out > ${TEST_RESULTS}/go-integrationtest-report.xml" EXIT
+          make integrationtest | tee ${TEST_RESULTS}/go-integrationtest.out
 
     - run: make build # pull and build dependencies for the project
 
@@ -63,8 +67,7 @@ jobs: # basic units of work in a run
     - run:
         name: Start service
         environment:
-          CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
-          CONTACTS_DB_MIGRATIONS: /go/src/github.com/CircleCI-Public/circleci-demo-go/db/migrations
+          DB_URL: "postgres://testbed@localhost:5432/testbed_test?sslmode=disable"
         command: ./dist/testbed
         background: true # keep service running and proceed to next step
 

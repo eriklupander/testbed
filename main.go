@@ -1,21 +1,17 @@
 package main
 
-import "fmt"
-import "github.com/twinj/uuid"
+import (
+	"fmt"
+	"github.com/spf13/viper"
+)
+
+func init() {
+	viper.AutomaticEnv()
+}
 
 func main() {
-	doStuff()
-}
-func doStuff() {
-	fmt.Println("UUID: " + uuid.NewV4().String())
-}
-
-func Dump(obj Stringer) {
-	fmt.Printf("%v\n", obj.ToString())
-}
-
-type Stringer interface {
-	ToString() string
+	fmt.Println("Starting testbed application")
+	Connect()
 }
 
 type T1 struct {

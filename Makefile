@@ -10,3 +10,6 @@ build:
 
 test:
 	@go test -v $(GOPACKAGES)
+
+integrationtest:
+    @go test -tags=integration
