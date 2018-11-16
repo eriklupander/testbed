@@ -10,7 +10,7 @@ jobs: # basic units of work in a run
         POSTGRES_USER: circleci-demo-go
         POSTGRES_DB: circle_test
     # directory where steps are run. Path must conform to the Go Workspace requirements
-    working_directory: /go/src/github.com/eriklupander/testbed
+    # working_directory: /go/src/github.com/eriklupander/testbed
 
     environment: # environment variables for the build itself
       GO111MODULE: "ON"
