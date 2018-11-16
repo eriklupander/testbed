@@ -48,6 +48,8 @@ func TestApi(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
+	SetupGin()
+
 	Convey("Given", t, func() {
 		guid := createTestAccount(t)
 
