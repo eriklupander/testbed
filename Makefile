@@ -5,6 +5,7 @@ default: build test
 
 build:
 	mkdir -p dist
+	export GO111MODULE=on
 	go build -o dist/testbed
 
 test:
