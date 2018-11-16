@@ -12,6 +12,7 @@ func init() {
 func main() {
 	fmt.Println("Starting testbed application")
 	Connect()
+	SetupGin()
 }
 
 type T1 struct {
