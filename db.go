@@ -30,11 +30,11 @@ func FindAccountImage(id string) (AccountImage, error) {
 	}
 	tx := db.Begin()
 	accountImage := &AccountImage{}
-	tx.Find(&accountImage, "ID=?", id)
+	tx = tx.Find(&accountImage, "ID=?", id)
 	if tx.Error != nil {
 		return *accountImage, tx.Error
 	}
-	tx.Commit()
+	tx = tx.Commit()
 	return *accountImage, nil
 }
 
