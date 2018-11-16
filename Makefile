@@ -15,10 +15,10 @@ test:
 	@go test -v $(GOPACKAGES)
 
 integrationtest:
-	@go test -tags=testtools integration
+	@go test -tags="testtools integration"
 
 e2etest:
-	@go test -tags=testtools e2e
+	@go test -tags="testtools e2e"
 
 run: build
 	./dist/testbed
