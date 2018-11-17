@@ -27,7 +27,9 @@ func TestDb(t *testing.T) {
 			Convey("Then we should get the correct value", func() {
 				// Assert
 				So(tx.Error, ShouldBeNil)
+				So(acc.ID, ShouldEqual, guid)
 				So(acc.URL, ShouldEqual, SAMPLE_URL)
+				So(acc.ServedBy, ShouldEqual, "localhost")
 			})
 		})
 
