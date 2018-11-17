@@ -28,5 +28,21 @@ func SetupGin() {
 			c.JSON(200, accountImage)
 		}
 	})
+	router.GET("/accounts", func(c *gin.Context) {
+		accountImages, err := ListAccountImages()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		} else {
+			c.JSON(200, accountImages)
+		}
+	})
+	router.GET("/seed", func(c *gin.Context) {
+		err := SeedRandomAccountImage()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		} else {
+			c.JSON(200, gin.H{"result": "ok"})
+		}
+	})
 	router.Run(":8080")
 }

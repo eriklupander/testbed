@@ -18,9 +18,9 @@ func TestRunningApi(t *testing.T) {
 		t.Errorf(err.Error())
 		panic(err.Error())
 	}
+	guid := createTestAccount(t)
 
 	Convey("Given", t, func() {
-		guid := createTestAccount(t)
 
 		Convey("When resource exists", func() {
 			resp, err := http.Get("http://localhost:8080/accounts/" + guid)
@@ -39,6 +39,18 @@ func TestRunningApi(t *testing.T) {
 			So(err, ShouldBeNil)
 			Convey("Then expect HTTP 404", func() {
 				So(resp.StatusCode, ShouldEqual, 404)
+			})
+		})
+
+		Convey("When listing all", func() {
+			resp, err := http.Get("http://localhost:8080/accounts")
+			So(err, ShouldBeNil)
+			Convey("Then expect HTTP 200", func() {
+				So(resp.StatusCode, ShouldEqual, 200)
+				body, _ := ioutil.ReadAll(resp.Body)
+				accountImages := &[]AccountImage{}
+				json.Unmarshal(body, &accountImages)
+				So(len(*accountImages), ShouldEqual, 1)
 			})
 		})
 	})

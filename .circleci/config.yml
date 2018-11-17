@@ -110,3 +110,8 @@ jobs: # basic units of work in a run
 
     - store_test_results: # Upload test results for display in Test Summary
         path: /tmp/test-results
+
+    - run:
+        name: Build docker image
+        command: |
+          docker build -t eriklupander/testbed:$CIRCLE_BRANCH .

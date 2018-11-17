@@ -5,6 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/spf13/viper"
+	"github.com/twinj/uuid"
 )
 
 var db *gorm.DB
@@ -36,6 +37,31 @@ func FindAccountImage(id string) (AccountImage, error) {
 	}
 	tx = tx.Commit()
 	return *accountImage, nil
+}
+
+func ListAccountImages() ([]AccountImage, error) {
+	if db == nil {
+		return []AccountImage{}, fmt.Errorf("DB not initialized")
+	}
+	accountImages := make([]AccountImage, 0)
+	tx := db.Begin()
+	tx.Find(&accountImages)
+	if tx.Error != nil {
+		return accountImages, tx.Error
+	}
+	tx = tx.Commit()
+	return accountImages, nil
+}
+
+func SeedRandomAccountImage() error {
+	guid := uuid.NewV4().String()
+	tx := db.Begin()
+	tx = tx.Create(&AccountImage{ID: guid, URL: "http://callistaenterprise.se", ServedBy: "localhost"})
+	if tx.Error != nil {
+		return tx.Error
+	}
+	tx = tx.Commit()
+	return nil
 }
 
 func health() bool {

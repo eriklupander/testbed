@@ -25,5 +25,6 @@ func createTestAccount(t *testing.T) string {
 		t.Error(fmt.Printf("Error creating AccountImage: %v", tx.Error.Error()))
 	}
 	tx = tx.Commit()
+	fmt.Printf("Created test account with id %v\n", guid)
 	return guid
 }
